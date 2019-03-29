@@ -128,11 +128,11 @@ namespace MGMineCraft
 
         // Calculates the mines around the space on the grid where the player has moved to
         // Display later to give them a clue 
-        static int numberOfMinesAroundPos(int l, int m)
+        static int numberOfMinesAroundPos(int currentYPos, int currentXPos)
         {
             int surroundingMines = 0;
-            for (int yPos = l - 1; yPos < l + 2; yPos++) {
-                for (int xPos = m - 1; xPos < m + 2; xPos++) {
+            for (int yPos = currentYPos - 1; yPos < currentYPos + 2; yPos++) {
+                for (int xPos = currentXPos - 1; xPos < currentXPos + 2; xPos++) {
                     if (yPos != 0 && xPos != 0 && yPos < boardHeight && xPos < boardWidth) {
                         if (minefield[yPos, xPos] == MineStates.Mined || minefield[yPos, xPos] == MineStates.Defused) {
                             surroundingMines++;
@@ -251,7 +251,7 @@ namespace MGMineCraft
             while (numberOfMinesDefused < 3 && endOfGame == false);
 
             if (currentPlayerYPosition == boardHeight-1) {
-                Console.WriteLine("*** You have won!  Congratulations on reaching the other side of the board ***");
+                Console.WriteLine("*** You have won!  You reached the other side of the board in {0} moves ***", numberOfMoves);
             } else {
                 Console.WriteLine("*** You have lost the game ***");
             }
