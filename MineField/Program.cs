@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MGMineCraft
 {
-    class Program
+    class MGMineCraft
     {
 
         enum MineStates
@@ -15,7 +15,7 @@ namespace MGMineCraft
             Visible,
             Defused,
         };
-
+        
         const int boardWidth = 10;
         const int boardHeight = 10;
 
@@ -59,10 +59,10 @@ namespace MGMineCraft
             }
         }
 
-        static void drawOnGrid(String item, Boolean isMine)
+        static void drawOnGrid(String item, Boolean isMineAtPosition)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            if (isMine)
+            if (isMineAtPosition)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
@@ -112,7 +112,7 @@ namespace MGMineCraft
                                 drawOnGrid("-", false);
                                 break;
                             case MineStates.Visible:
-                                drawOnGrid(surroundingMines(yPos, xPos).ToString(), false);
+                                drawOnGrid(numberOfMinesAroundPos(yPos, xPos).ToString(), false);
                                 break;
                             case MineStates.Defused:
                                 drawOnGrid("*", true);
@@ -128,7 +128,7 @@ namespace MGMineCraft
 
         // Calculates the mines around the space on the grid where the player has moved to
         // Display later to give them a clue 
-        static int surroundingMines(int l, int m)
+        static int numberOfMinesAroundPos(int l, int m)
         {
             int surroundingMines = 0;
             for (int yPos = l - 1; yPos < l + 2; yPos++) {
@@ -205,13 +205,13 @@ namespace MGMineCraft
                 }
             }
 
-   
             if (playerHasMoved)
             {
                 if (minefield[currentPlayerYPosition, currentPlayerXPosition] == MineStates.Mined)
                 {
                     livesRemaining--;
-                    // Show player where mine was
+                    // Show player where mine was (at last position)
+
                     minefield[currentPlayerYPosition, currentPlayerXPosition] = MineStates.Defused;
                     if (livesRemaining == 0)
                     {
@@ -257,8 +257,7 @@ namespace MGMineCraft
             }
 
             Console.WriteLine("Press Y to play again or any other key to exit");
-            string playAgain = Console.ReadLine();
-            if (playAgain.ToUpper() == "Y") {
+            if (Console.ReadLine().ToUpper() == "Y") {
                 Main();
             }
         }
